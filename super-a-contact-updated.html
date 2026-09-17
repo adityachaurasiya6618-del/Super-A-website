@@ -1,0 +1,954 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#050914">
+  <meta name="description" content="Super A — a modern Indian superhero comic universe. Follow Aditya's journey from curious student to hero.">
+  <title>Super A — Indian Superhero Universe</title>
+
+  <style>
+    :root {
+      --bg: #050914;
+      --bg2: #081222;
+      --panel: rgba(10, 22, 40, .78);
+      --panel2: rgba(12, 29, 52, .9);
+      --blue: #28a9ff;
+      --blue2: #66d7ff;
+      --red: #ff4d3d;
+      --orange: #ff9b3d;
+      --text: #eef7ff;
+      --muted: #9fb1c6;
+      --line: rgba(102, 215, 255, .18);
+      --max: 1180px;
+      --shadow: 0 20px 70px rgba(0,0,0,.45);
+      --radius: 22px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background:
+        radial-gradient(circle at 75% 12%, rgba(40,169,255,.12), transparent 28%),
+        radial-gradient(circle at 15% 55%, rgba(255,77,61,.055), transparent 22%),
+        var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+    a { color: inherit; text-decoration: none; }
+    button { font: inherit; }
+    img { max-width: 100%; display: block; }
+
+    /* Ambient cinematic grid */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: .18;
+      background-image:
+        linear-gradient(rgba(102,215,255,.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(102,215,255,.04) 1px, transparent 1px);
+      background-size: 54px 54px;
+      mask-image: linear-gradient(to bottom, black, transparent 80%);
+      z-index: -1;
+    }
+
+    .container { width: min(calc(100% - 36px), var(--max)); margin: auto; }
+
+    /* NAV */
+    .nav-wrap {
+      position: fixed;
+      z-index: 100;
+      top: 0;
+      left: 0;
+      width: 100%;
+      padding: 14px 0;
+      background: linear-gradient(to bottom, rgba(5,9,20,.95), rgba(5,9,20,.45), transparent);
+      backdrop-filter: blur(10px);
+    }
+    nav {
+      width: min(calc(100% - 24px), 1120px);
+      margin: auto;
+      padding: 10px 14px;
+      border: 1px solid rgba(102,215,255,.12);
+      border-radius: 18px;
+      background: rgba(5,12,24,.72);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 10px 40px rgba(0,0,0,.25);
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 900;
+      letter-spacing: .04em;
+    }
+    .brand-mark {
+      width: 36px;
+      height: 36px;
+      border: 2px solid var(--blue2);
+      border-radius: 11px;
+      display: grid;
+      place-items: center;
+      color: white;
+      font-weight: 1000;
+      font-style: italic;
+      box-shadow: 0 0 20px rgba(40,169,255,.25);
+    }
+    .brand span { color: var(--blue2); }
+    .nav-links { display: flex; gap: 5px; align-items: center; }
+    .nav-links a {
+      padding: 9px 12px;
+      border-radius: 10px;
+      color: #c9d8e7;
+      font-size: .9rem;
+      transition: .2s;
+    }
+    .nav-links a:hover { background: rgba(40,169,255,.1); color: white; }
+    .menu {
+      display: none;
+      background: transparent;
+      border: 1px solid var(--line);
+      color: white;
+      padding: 8px 11px;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+
+    /* HERO */
+    .hero {
+      min-height: 820px;
+      display: flex;
+      align-items: center;
+      position: relative;
+      padding: 130px 0 80px;
+      isolation: isolate;
+    }
+    .hero::after {
+      content: "";
+      position: absolute;
+      right: -16vw;
+      top: 80px;
+      width: 62vw;
+      height: 62vw;
+      max-width: 760px;
+      max-height: 760px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(40,169,255,.2), rgba(40,169,255,.045) 35%, transparent 68%);
+      filter: blur(3px);
+      z-index: -1;
+    }
+    .hero-inner {
+      display: grid;
+      grid-template-columns: 1.08fr .92fr;
+      align-items: center;
+      gap: 60px;
+    }
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      color: var(--blue2);
+      font-size: .78rem;
+      letter-spacing: .18em;
+      font-weight: 800;
+      text-transform: uppercase;
+      margin-bottom: 18px;
+    }
+    .eyebrow::before {
+      content: "";
+      width: 28px;
+      height: 2px;
+      background: var(--blue);
+      box-shadow: 0 0 12px var(--blue);
+    }
+    h1 {
+      font-size: clamp(4rem, 10vw, 8rem);
+      line-height: .82;
+      letter-spacing: -.075em;
+      text-transform: uppercase;
+      font-style: italic;
+      text-shadow: 0 0 30px rgba(40,169,255,.18);
+    }
+    h1 .a { color: var(--blue2); }
+    .hero h2 {
+      margin-top: 24px;
+      max-width: 650px;
+      font-size: clamp(1.35rem, 3vw, 2.2rem);
+      line-height: 1.12;
+      letter-spacing: -.025em;
+    }
+    .hero p {
+      margin-top: 18px;
+      max-width: 600px;
+      color: var(--muted);
+      font-size: 1.04rem;
+    }
+    .actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
+    .btn {
+      border: 1px solid rgba(102,215,255,.3);
+      background: rgba(40,169,255,.1);
+      color: white;
+      padding: 13px 18px;
+      border-radius: 13px;
+      font-weight: 800;
+      cursor: pointer;
+      transition: transform .2s, box-shadow .2s, background .2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .btn:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(40,169,255,.15); }
+    .btn.primary {
+      background: linear-gradient(135deg, #168ee8, #32baff);
+      border-color: transparent;
+      color: #03101c;
+    }
+    .btn.red {
+      background: rgba(255,77,61,.1);
+      border-color: rgba(255,77,61,.35);
+    }
+
+    /* Hero visual */
+    .hero-art {
+      position: relative;
+      min-height: 520px;
+      display: grid;
+      place-items: center;
+    }
+    .energy-ring {
+      width: min(420px, 75vw);
+      aspect-ratio: 1;
+      border-radius: 50%;
+      border: 1px solid rgba(102,215,255,.22);
+      box-shadow: inset 0 0 80px rgba(40,169,255,.06), 0 0 80px rgba(40,169,255,.08);
+      position: relative;
+      animation: pulse 4s ease-in-out infinite;
+    }
+    .energy-ring::before, .energy-ring::after {
+      content: "";
+      position: absolute;
+      inset: 11%;
+      border-radius: 50%;
+      border: 1px dashed rgba(102,215,255,.22);
+    }
+    .energy-ring::after { inset: 24%; border-style: solid; border-color: rgba(255,77,61,.18); }
+    .hero-silhouette {
+      position: absolute;
+      width: 190px;
+      height: 390px;
+      background: linear-gradient(150deg, rgba(20,39,64,.96), rgba(2,9,18,.98));
+      clip-path: polygon(39% 0, 62% 0, 72% 12%, 69% 29%, 82% 45%, 72% 54%, 83% 93%, 58% 100%, 50% 67%, 42% 100%, 17% 93%, 28% 54%, 18% 45%, 31% 29%, 28% 12%);
+      filter: drop-shadow(0 0 28px rgba(40,169,255,.25));
+    }
+    .hero-silhouette::after {
+      content: "A";
+      position: absolute;
+      left: 50%;
+      top: 38%;
+      transform: translate(-50%, -50%);
+      color: var(--blue2);
+      font-size: 4rem;
+      font-weight: 1000;
+      font-style: italic;
+      text-shadow: 0 0 25px var(--blue);
+    }
+    .orbit {
+      position: absolute;
+      width: 105%;
+      height: 42%;
+      border: 1px solid rgba(40,169,255,.2);
+      border-radius: 50%;
+      transform: rotate(-24deg);
+    }
+    .orbit-dot {
+      position: absolute;
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: var(--orange);
+      box-shadow: 0 0 20px var(--orange);
+      top: 14%;
+      left: 11%;
+    }
+
+    /* SECTION */
+    section { padding: 92px 0; position: relative; }
+    .section-head { margin-bottom: 34px; }
+    .section-head h2 {
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      line-height: 1;
+      letter-spacing: -.05em;
+    }
+    .section-head p { color: var(--muted); max-width: 650px; margin-top: 12px; }
+    .kicker { color: var(--red); font-weight: 900; font-size: .75rem; letter-spacing: .16em; text-transform: uppercase; margin-bottom: 9px; }
+
+    /* STORY */
+    .story-grid { display: grid; grid-template-columns: .85fr 1.15fr; gap: 24px; }
+    .panel {
+      background: linear-gradient(145deg, rgba(15,32,55,.9), rgba(7,15,28,.85));
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+    .story-card { padding: 30px; min-height: 330px; position: relative; overflow: hidden; }
+    .story-card::before {
+      content: "01";
+      position: absolute;
+      right: 20px;
+      bottom: -25px;
+      font-size: 8rem;
+      font-weight: 1000;
+      color: rgba(102,215,255,.035);
+      font-style: italic;
+    }
+    .story-card h3 { font-size: 1.55rem; margin-bottom: 12px; }
+    .story-card p { color: var(--muted); }
+    .facts { display: grid; grid-template-columns: repeat(2,1fr); gap: 12px; margin-top: 22px; }
+    .fact { padding: 14px; border-radius: 14px; background: rgba(255,255,255,.025); border: 1px solid rgba(255,255,255,.06); }
+    .fact small { color: #7890a9; display: block; font-size: .7rem; text-transform: uppercase; letter-spacing: .12em; }
+    .fact strong { display: block; margin-top: 4px; }
+
+    /* CHARACTERS */
+    .character-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 18px; }
+    .character {
+      min-height: 390px;
+      padding: 22px;
+      overflow: hidden;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+    }
+    .character .portrait {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 50% 30%, rgba(102,215,255,.24), transparent 25%),
+        linear-gradient(145deg, #122943, #050b14 68%);
+    }
+    .character .portrait::before {
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: 21%;
+      width: 110px;
+      height: 110px;
+      transform: translateX(-50%);
+      border-radius: 50%;
+      background: #0b1728;
+      border: 2px solid rgba(102,215,255,.35);
+      box-shadow: 0 0 50px rgba(40,169,255,.15);
+    }
+    .character .portrait::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: 41%;
+      width: 190px;
+      height: 250px;
+      transform: translateX(-50%);
+      border-radius: 45% 45% 12% 12%;
+      background: linear-gradient(160deg, #142c48, #050a12);
+      border: 1px solid rgba(102,215,255,.12);
+    }
+    .character-content { position: relative; z-index: 2; padding: 12px; border-radius: 16px; background: linear-gradient(transparent, rgba(3,8,16,.96) 25%); }
+    .character h3 { font-size: 1.5rem; }
+    .character p { color: #9db0c4; font-size: .9rem; }
+    .tag { display: inline-block; margin-bottom: 8px; color: var(--blue2); font-size: .68rem; text-transform: uppercase; letter-spacing: .13em; font-weight: 900; }
+
+    /* COMIC */
+    .comic-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 18px; }
+    .issue {
+      overflow: hidden;
+      transition: transform .2s, border-color .2s;
+    }
+    .issue:hover { transform: translateY(-5px); border-color: rgba(102,215,255,.4); }
+    .cover {
+      aspect-ratio: 3/4;
+      display: grid;
+      place-items: center;
+      position: relative;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at 50% 38%, rgba(40,169,255,.5), transparent 20%),
+        linear-gradient(145deg, #122b48, #050912 70%);
+    }
+    .cover .cover-a {
+      font-size: 9rem;
+      font-weight: 1000;
+      font-style: italic;
+      color: rgba(102,215,255,.72);
+      text-shadow: 0 0 35px rgba(40,169,255,.35);
+    }
+    .cover::before {
+      content: "";
+      position: absolute;
+      width: 150%;
+      height: 2px;
+      background: rgba(255,255,255,.25);
+      transform: rotate(-35deg);
+      box-shadow: 0 45px 0 rgba(255,255,255,.08), 0 -45px 0 rgba(255,255,255,.08);
+    }
+    .issue-body { padding: 18px; }
+    .issue-body h3 { font-size: 1.15rem; }
+    .issue-body p { color: var(--muted); font-size: .88rem; margin-top: 6px; }
+    .issue-number { color: var(--orange); font-size: .7rem; font-weight: 900; letter-spacing: .15em; text-transform: uppercase; }
+
+    /* TIMELINE */
+    .timeline { position: relative; max-width: 850px; margin: 10px auto 0; }
+    .timeline::before {
+      content: "";
+      position: absolute;
+      left: 18px;
+      top: 0;
+      bottom: 0;
+      width: 1px;
+      background: linear-gradient(var(--blue), rgba(40,169,255,.04));
+    }
+    .step { position: relative; padding: 0 0 28px 60px; }
+    .step:last-child { padding-bottom: 0; }
+    .dot {
+      position: absolute;
+      left: 11px;
+      top: 3px;
+      width: 15px;
+      height: 15px;
+      border-radius: 50%;
+      background: var(--bg);
+      border: 2px solid var(--blue2);
+      box-shadow: 0 0 16px rgba(40,169,255,.45);
+    }
+    .step h3 { font-size: 1.1rem; }
+    .step p { color: var(--muted); margin-top: 5px; }
+
+    /* CTA */
+    .cta {
+      padding: 60px 30px;
+      text-align: center;
+      overflow: hidden;
+      position: relative;
+      background:
+        radial-gradient(circle at 50% 0%, rgba(40,169,255,.18), transparent 45%),
+        linear-gradient(145deg, rgba(13,31,53,.95), rgba(5,11,21,.96));
+    }
+    .cta h2 { font-size: clamp(2.2rem, 6vw, 4.5rem); line-height: .95; letter-spacing: -.06em; }
+    .cta p { color: var(--muted); max-width: 600px; margin: 15px auto 0; }
+
+    footer { border-top: 1px solid rgba(102,215,255,.1); padding: 32px 0 42px; color: #71859a; }
+    .footer-row { display: flex; justify-content: space-between; gap: 20px; align-items: center; }
+    .footer-brand { color: white; font-weight: 900; }
+    .footer-brand span { color: var(--blue2); }
+
+    /* COMING SOON */
+    .coming-soon {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 16px;
+      padding: 8px 13px;
+      border: 1px solid rgba(255,155,61,.38);
+      border-radius: 999px;
+      background: rgba(255,155,61,.08);
+      color: var(--orange);
+      font-size: .72rem;
+      font-weight: 900;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+    }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+      margin-top: 28px;
+    }
+    .contact-card {
+      display: block;
+      padding: 24px;
+      text-align: left;
+      transition: transform .2s, border-color .2s, background .2s;
+    }
+    .contact-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(102,215,255,.4);
+      background: rgba(40,169,255,.08);
+    }
+    .contact-card .tag { margin-bottom: 8px; }
+    .contact-card h3 { font-size: 1.2rem; }
+    .contact-card p { color: var(--muted); margin-top: 5px; font-size: .9rem; word-break: break-word; }
+    .contact-icon {
+      font-size: 1.5rem;
+      margin-bottom: 12px;
+    }
+
+    /* Modal */
+    .modal {
+      position: fixed;
+      inset: 0;
+      z-index: 200;
+      display: none;
+      place-items: center;
+      padding: 20px;
+      background: rgba(0,0,0,.75);
+      backdrop-filter: blur(8px);
+    }
+    .modal.open { display: grid; }
+    .modal-box {
+      width: min(700px, 100%);
+      padding: 30px;
+      position: relative;
+      max-height: 90vh;
+      overflow: auto;
+    }
+    .close {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.04);
+      color: white;
+      cursor: pointer;
+    }
+    .modal-box p { color: var(--muted); margin-top: 12px; }
+    .modal-box ul { margin: 16px 0 0 20px; color: #b7c8d8; }
+    .modal-box li { margin: 7px 0; }
+
+    /* Reveal */
+    .reveal { opacity: 0; transform: translateY(18px); transition: opacity .65s ease, transform .65s ease; }
+    .reveal.visible { opacity: 1; transform: none; }
+
+    @keyframes pulse {
+      0%,100% { transform: scale(1); }
+      50% { transform: scale(1.025); }
+    }
+
+    /* MOBILE */
+    @media (max-width: 820px) {
+      .nav-links {
+        display: none;
+        position: absolute;
+        top: 68px;
+        left: 12px;
+        right: 12px;
+        flex-direction: column;
+        align-items: stretch;
+        padding: 10px;
+        border: 1px solid var(--line);
+        border-radius: 15px;
+        background: rgba(5,12,24,.97);
+      }
+      .nav-links.open { display: flex; }
+      .nav-links a { padding: 13px; }
+      .menu { display: block; }
+      .hero { min-height: auto; padding-top: 145px; }
+      .hero-inner, .story-grid { grid-template-columns: 1fr; }
+      .hero-art { min-height: 400px; order: -1; }
+      .character-grid, .comic-grid, .contact-grid { grid-template-columns: 1fr; }
+      .character { min-height: 360px; }
+      section { padding: 72px 0; }
+    }
+
+    @media (max-width: 480px) {
+      .container { width: min(calc(100% - 26px), var(--max)); }
+      nav { width: calc(100% - 14px); }
+      h1 { font-size: 4.3rem; }
+      .hero-art { min-height: 330px; }
+      .energy-ring { width: 285px; }
+      .hero-silhouette { transform: scale(.78); }
+      .facts { grid-template-columns: 1fr; }
+      .story-card { padding: 23px; }
+      .cta { padding: 45px 20px; }
+      .footer-row { flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- NAVIGATION -->
+  <header class="nav-wrap">
+    <nav>
+      <a href="#home" class="brand" aria-label="Super A home">
+        <div class="brand-mark">A</div>
+        <div>SUPER <span>A</span></div>
+      </a>
+
+      <button class="menu" id="menuBtn" aria-label="Open menu">☰</button>
+
+      <div class="nav-links" id="navLinks">
+        <a href="#story">Story</a>
+        <a href="#characters">Characters</a>
+        <a href="#comics">Comics</a>
+        <a href="#journey">Journey</a>
+        <a href="#about">About</a>
+        <a href="#contact">Contact</a>
+      </div>
+    </nav>
+  </header>
+
+  <main id="home">
+
+    <!-- HERO -->
+    <section class="hero">
+      <div class="container hero-inner">
+        <div class="reveal">
+          <div class="eyebrow">AN INDIAN SUPERHERO UNIVERSE</div>
+          <h1>SUPER <span class="a">A</span></h1>
+          <h2>Every hero starts as someone ordinary.</h2>
+          <p>
+            Meet Aditya — a curious 14-year-old student whose normal life is
+            interrupted by a mysterious event. Now he must understand what is
+            happening to him before the world discovers it.
+          </p>
+
+          <div class="coming-soon">Coming Soon</div>
+          <div class="actions">
+            <a class="btn primary" href="#story">Explore the Universe →</a>
+            <a class="btn red" href="#comics">Enter the Comics</a>
+          </div>
+        </div>
+
+        <div class="hero-art reveal" aria-hidden="true">
+          <div class="energy-ring"></div>
+          <div class="orbit"><div class="orbit-dot"></div></div>
+          <div class="hero-silhouette"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- STORY -->
+    <section id="story">
+      <div class="container">
+        <div class="section-head reveal">
+          <div class="kicker">The Beginning</div>
+          <h2>A normal student.<br>A very unusual day.</h2>
+          <p>The origin of a hero is not always a battle. Sometimes it begins with a question.</p>
+        </div>
+
+        <div class="story-grid">
+          <article class="panel story-card reveal">
+            <h3>Aditya's World</h3>
+            <p>
+              Aditya is a 14-year-old student from Azamgarh. He enjoys learning,
+              technology and exploring unusual things. He is intelligent and
+              curious, but at the beginning he has no idea that his life is about
+              to change.
+            </p>
+
+            <div class="facts">
+              <div class="fact"><small>Age</small><strong>14</strong></div>
+              <div class="fact"><small>Home</small><strong>Azamgarh, India</strong></div>
+              <div class="fact"><small>School</small><strong>Sanskar Pathshala</strong></div>
+              <div class="fact"><small>Nature</small><strong>Curious & Smart</strong></div>
+            </div>
+          </article>
+
+          <article class="panel story-card reveal">
+            <div class="kicker">The Mystery</div>
+            <h3>Something happened. Nothing stayed normal.</h3>
+            <p>
+              A mysterious event gives Aditya extraordinary abilities. At first,
+              he does not understand them. The early story focuses on discovery:
+              what changed, why it happened, and whether he can control it.
+            </p>
+            <br>
+            <p>
+              The identity of the hero develops gradually. The name, costume and
+              full purpose come later — as part of Aditya's journey rather than
+              being revealed all at once.
+            </p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- CHARACTERS -->
+    <section id="characters">
+      <div class="container">
+        <div class="section-head reveal">
+          <div class="kicker">Universe</div>
+          <h2>Characters</h2>
+          <p>The people and forces that will shape Aditya's story.</p>
+          <div class="coming-soon">Coming Soon</div>
+        </div>
+
+        <div class="character-grid">
+          <article class="panel character reveal">
+            <div class="portrait"></div>
+            <div class="character-content">
+              <span class="tag">Main Character</span>
+              <h3>Aditya</h3>
+              <p>A 14-year-old student with a sharp mind, curiosity and a life-changing mystery ahead.</p>
+            </div>
+          </article>
+
+          <article class="panel character reveal">
+            <div class="portrait" style="background:radial-gradient(circle at 50% 30%, rgba(255,77,61,.25), transparent 25%),linear-gradient(145deg,#321d2a,#08090f 68%);"></div>
+            <div class="character-content">
+              <span class="tag" style="color:var(--red)">Threat</span>
+              <h3>Domo</h3>
+              <p>A mysterious scientist connected to the dangerous side of the universe.</p>
+            </div>
+          </article>
+
+          <article class="panel character reveal">
+            <div class="portrait" style="background:radial-gradient(circle at 50% 30%, rgba(255,155,61,.23), transparent 25%),linear-gradient(145deg,#302715,#080a10 68%);"></div>
+            <div class="character-content">
+              <span class="tag" style="color:var(--orange)">Unknown</span>
+              <h3>???</h3>
+              <p>New allies, rivals and villains will be revealed as the universe expands.</p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- COMICS -->
+    <section id="comics">
+      <div class="container">
+        <div class="section-head reveal">
+          <div class="kicker">Read the Universe</div>
+          <h2>Comic Archive</h2>
+          <p>Every issue is another step in Aditya's transformation.</p>
+          <div class="coming-soon">Coming Soon</div>
+        </div>
+
+        <div class="comic-grid">
+          <article class="panel issue reveal">
+            <div class="cover">
+              <div class="cover-a">01</div>
+            </div>
+            <div class="issue-body">
+              <div class="issue-number">Issue 01</div>
+              <h3>The First Sign</h3>
+              <p>The ordinary world begins to feel different.</p>
+            </div>
+          </article>
+
+          <article class="panel issue reveal">
+            <div class="cover">
+              <div class="cover-a">02</div>
+            </div>
+            <div class="issue-body">
+              <div class="issue-number">Issue 02</div>
+              <h3>The Mystery</h3>
+              <p>A strange discovery raises more questions than answers.</p>
+            </div>
+          </article>
+
+          <article class="panel issue reveal">
+            <div class="cover">
+              <div class="cover-a">03</div>
+            </div>
+            <div class="issue-body">
+              <div class="issue-number">Issue 03</div>
+              <h3>Awakening</h3>
+              <p>Aditya starts discovering what his new abilities can do.</p>
+            </div>
+          </article>
+        </div>
+
+        <div style="text-align:center;margin-top:28px" class="reveal">
+          <button class="btn primary" id="archiveBtn">View Archive Info →</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- JOURNEY -->
+    <section id="journey">
+      <div class="container">
+        <div class="section-head reveal">
+          <div class="kicker">Character Arc</div>
+          <h2>The Journey</h2>
+          <p>The hero identity is built through choices, mistakes and discovery.</p>
+        </div>
+
+        <div class="timeline">
+          <div class="step reveal">
+            <div class="dot"></div>
+            <h3>01 — Ordinary Life</h3>
+            <p>Aditya is simply a student: learning, exploring and trying to understand the world around him.</p>
+          </div>
+          <div class="step reveal">
+            <div class="dot"></div>
+            <h3>02 — The Mysterious Event</h3>
+            <p>Something unexplained changes his life and leaves him with extraordinary abilities.</p>
+          </div>
+          <div class="step reveal">
+            <div class="dot"></div>
+            <h3>03 — Discovery</h3>
+            <p>He tests what is happening and slowly begins to understand his new abilities.</p>
+          </div>
+          <div class="step reveal">
+            <div class="dot"></div>
+            <h3>04 — Responsibility</h3>
+            <p>Power creates difficult choices. Aditya has to decide what kind of person he wants to become.</p>
+          </div>
+          <div class="step reveal">
+            <div class="dot"></div>
+            <h3>05 — The Hero Emerges</h3>
+            <p>The identity, purpose and larger universe begin to take shape.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ABOUT / CTA -->
+    <section id="about">
+      <div class="container">
+        <div class="panel cta reveal">
+          <div class="kicker">Welcome to the Universe</div>
+          <h2>A story from India.<br>Built for a bigger world.</h2>
+          <p>
+            Super A is an original superhero comic universe focused on discovery,
+            technology, mystery and the journey from an ordinary student to a hero.
+          </p>
+          <div class="actions" style="justify-content:center">
+            <a href="#home" class="btn primary">Back to Top ↑</a>
+            <button class="btn" id="aboutBtn">About the Project</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+
+    <!-- CONTACT -->
+    <section id="contact">
+      <div class="container">
+        <div class="section-head reveal">
+          <div class="kicker">Connect</div>
+          <h2>Contact</h2>
+          <p>Follow the journey or contact the Super A project directly.</p>
+        </div>
+
+        <div class="contact-grid">
+          <a class="panel contact-card reveal"
+             href="https://www.instagram.com/trackofentrupenure/"
+             target="_blank" rel="noopener noreferrer"
+             aria-label="Open Aditya's personal Instagram">
+            <div class="contact-icon">◎</div>
+            <span class="tag">Aditya — Personal</span>
+            <h3>@trackofentrupenure</h3>
+            <p>Open Instagram profile →</p>
+          </a>
+
+          <a class="panel contact-card reveal"
+             href="https://www.instagram.com/super.aofficial/"
+             target="_blank" rel="noopener noreferrer"
+             aria-label="Open Super A Instagram">
+            <div class="contact-icon">✦</div>
+            <span class="tag">Super A — Official</span>
+            <h3>@super.aofficial</h3>
+            <p>Open Instagram profile →</p>
+          </a>
+
+          <a class="panel contact-card reveal"
+             href="mailto:superaofficial18@gmail.com"
+             aria-label="Email Super A">
+            <div class="contact-icon">✉</div>
+            <span class="tag">Email</span>
+            <h3>Contact Super A</h3>
+            <p>superaofficial18@gmail.com</p>
+          </a>
+        </div>
+      </div>
+    </section>
+
+  <footer>
+    <div class="container footer-row">
+      <div class="footer-brand">SUPER <span>A</span></div>
+      <div>© 2026 Super A Universe · An original comic project</div>
+    </div>
+  </footer>
+
+  <!-- MODAL -->
+  <div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal-box panel">
+      <button class="close" id="closeModal" aria-label="Close">×</button>
+      <div class="kicker">Super A</div>
+      <h2 id="modalTitle">About the Project</h2>
+      <p>
+        Super A is being developed as a modern Indian superhero universe.
+        The website is designed to grow with the comic: new pages, characters,
+        villains, locations and story arcs can be added without changing the core design.
+      </p>
+      <ul>
+        <li>Original Indian superhero setting</li>
+        <li>Character-first storytelling</li>
+        <li>Mystery and gradual power discovery</li>
+        <li>Expandable comic archive</li>
+        <li>Responsive design for phones, tablets and computers</li>
+      </ul>
+    </div>
+  </div>
+
+  <script>
+    // Mobile navigation
+    const menuBtn = document.getElementById("menuBtn");
+    const navLinks = document.getElementById("navLinks");
+
+    menuBtn.addEventListener("click", () => {
+      navLinks.classList.toggle("open");
+      menuBtn.textContent = navLinks.classList.contains("open") ? "×" : "☰";
+    });
+
+    document.querySelectorAll("#navLinks a").forEach(link => {
+      link.addEventListener("click", () => {
+        navLinks.classList.remove("open");
+        menuBtn.textContent = "☰";
+      });
+    });
+
+    // Modal
+    const modal = document.getElementById("modal");
+    const closeModal = document.getElementById("closeModal");
+
+    function openModal(title, text) {
+      document.getElementById("modalTitle").textContent = title;
+      modal.classList.add("open");
+    }
+
+    document.getElementById("aboutBtn").addEventListener("click", () => {
+      openModal("About the Project");
+    });
+
+    document.getElementById("archiveBtn").addEventListener("click", () => {
+      openModal("Comic Archive");
+    });
+
+    closeModal.addEventListener("click", () => modal.classList.remove("open"));
+
+    modal.addEventListener("click", (e) => {
+      if (e.target === modal) modal.classList.remove("open");
+    });
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") modal.classList.remove("open");
+    });
+
+    // Scroll reveal
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("visible");
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: .12 });
+
+    document.querySelectorAll(".reveal").forEach(el => observer.observe(el));
+  </script>
+
+</body>
+</html>
